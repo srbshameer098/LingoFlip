@@ -90,11 +90,38 @@ class _HomeState extends State<Home> {
                           fontWeight: FontWeight.w400,
                         )
                     ),
-                    SizedBox(height: 17.h,),
+                    SizedBox(height: 70.h,),
 
-                    CircleAvatar(radius: 24.r,
-                      backgroundColor: Color(0xff003366),
-                      child: Icon(Icons.mic,color: Colors.white,),)
+                    Row(
+                      children: [
+                        CircleAvatar(radius: 24.r,
+                          backgroundColor: Color(0xff003366),
+                          child: Icon(Icons.mic,color: Colors.white,),),
+                        SizedBox(width: 152.w,),
+                        Container(
+                          width: 90.w,
+                          height: 40.h,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              color: Color(0xffFF6600)),
+                          child: Padding(
+                            padding:  EdgeInsets.only(left: 14.w,right: 14.w,top: 10.h),
+                            child: Text(
+                                "Translate",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w500,
+                                )
+                            ),
+                          ),
+
+                        )
+
+                      ],
+                    ),
+
+
 
                   ],
                 ),
@@ -131,15 +158,25 @@ class _HomeState extends State<Home> {
                     ),
                     SizedBox(height: 17.h,),
                     Text(
-                        "Hello how are you?",
+                        "مرحبا، كيف حالك ؟",
                         style: TextStyle(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w400,
                         )
                     ),
-                    SizedBox(height: 17.h,),
+                    SizedBox(height: 90.h,),
 
 
+                    Row(crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(width: 205.w,),
+                        Icon(Icons.copy,color: Color(0xff003366),),
+                        SizedBox(width: 5.w,),
+                        Icon(Icons.ios_share_outlined,color:Color(0xff003366) ,),
+                        SizedBox(width: 5.w,),
+                        Icon(Icons.star_border_outlined,color:Color(0xff003366)),
+                      ],
+                    )
 
                   ],
                 ),
