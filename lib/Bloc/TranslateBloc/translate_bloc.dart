@@ -13,7 +13,15 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
   late TranslateModel translateModel;
   TranslateBloc() : super(TranslateInitial()) {
     on<FetchTranslate>((event, emit)async{
-      emit()
+      emit(TranslateblocLoading());
+      try{
+
+        translateModel =await translateApi.getTranslate(event.message);
+        emit(TranslateblocLoaded());
+      }catch(e){
+        print(e);
+        emit(TranslateblocError());
+      }
 
     });
   }

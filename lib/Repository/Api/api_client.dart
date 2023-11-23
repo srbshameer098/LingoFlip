@@ -54,7 +54,9 @@ class ApiClient {
         response = await get(
           Uri.parse(url),
           headers: {
-
+        'X-RapidAPI-Key':
+        'dbc587bffamsh2b67e6067435268p1899a2jsn82c62768dbc6',
+        'X-RapidAPI-Host': 'google-translate113.p.rapidapi.com',
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },

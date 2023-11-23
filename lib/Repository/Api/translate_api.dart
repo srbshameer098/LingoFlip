@@ -12,11 +12,11 @@ class TranslateApi {
   ApiClient apiClient = ApiClient();
 
 
-  Future<TranslateModel> getImdb(String text) async {
+  Future<TranslateModel> getTranslate(String text) async {
     String trendingpath = 'https://google-translate113.p.rapidapi.com/api/v1/translator/text';
     var body = {
- "from":"auto",
-      "to":"en",
+     "from":"auto",
+      "to":"ml",
       "text":text,
 
     };

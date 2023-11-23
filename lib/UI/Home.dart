@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:translater/Bloc/translate_bloc.dart';
+import 'package:translater/Bloc/TranslateBloc/translate_bloc.dart';
+
+import 'package:translater/Repository/ModalClass/TranslateModel.dart';
+import 'package:translater/Repository/ModalClass/TranslateModel.dart';
+import 'package:translater/Repository/ModalClass/TranslateModel.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -9,10 +13,24 @@ class Home extends StatefulWidget {
   @override
   State<Home> createState() => _HomeState();
 }
-TextEditingController message=TextEditingController();
+
+late TranslateModel data;
+
+TextEditingController message = TextEditingController();
+
 class _HomeState extends State<Home> {
 
 
+  String dropdownvalue = 'malayalam';
+
+
+  var language = [
+    'malayalam',
+    'english',
+    'af',
+    'ar',
+    'sq ',
+  ];
 
 
   @override
@@ -26,9 +44,9 @@ class _HomeState extends State<Home> {
         ),
         title: Center(
             child: Text(
-          'Language Translater',
-          style: TextStyle(color: Colors.white),
-        )),
+              'Language Translater',
+              style: TextStyle(color: Colors.white),
+            )),
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -43,27 +61,62 @@ class _HomeState extends State<Home> {
                     color: Color(0x0c6750a4)),
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: 50.w,
+                    left: 40.w,
                   ),
                   child: Row(
                     children: [
-                      Text("English",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                          )),
+                      SizedBox(width: 90.w,
+                        child: Center(
+                          child: Text("English",
+                              style: TextStyle(
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w500,
+                              )),
+                        ),
+                      ),
                       SizedBox(
-                        width: 49.w,
+                        width: 20.w,
                       ),
                       Icon(Icons.swap_horiz_outlined),
                       SizedBox(
-                        width: 49.w,
+                        width: 20.w,
                       ),
-                      Text("Arabic",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w500,
-                          )),
+
+                      DropdownButton(
+
+                        // Initial Value
+                        value: dropdownvalue,
+
+                        // Down Arrow Icon
+                        // icon: const Icon(Icons.keyboard_arrow_down,size: 18,),
+
+                        // Array list of items
+                        items: language.map((String items) {
+                          return DropdownMenuItem(
+                            value: items,
+                            child: SizedBox(width: 90.w,
+                                child: Center(child: Text(items))),
+                          );
+                        }).toList(),
+                        // After selecting the desired option,it will
+                        // change button value to selected value
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            dropdownvalue = newValue!;
+                          });
+                        },
+                      ),
+
+
+
+
+
+
+                      // Text("Arabic",
+                      //     style: TextStyle(
+                      //       fontSize: 16.sp,
+                      //       fontWeight: FontWeight.w500,
+                      //     )),
                     ],
                   ),
                 ),
@@ -109,14 +162,16 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         height: 17.h,
                       ),
-                      SizedBox(width: 300.w,height: 80.h,
-                        child: TextFormField(controller:message ,
+                      SizedBox(width: 300.w, height: 80.h,
+                        child: TextFormField(controller: message,
                           decoration: const InputDecoration(
-                            focusedBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent)),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent)),
-                            hintText: "Hello how are you ?"
+                              focusedBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.transparent)),
+                              enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: Colors.transparent)),
+                              hintText: "Hello how are you ?"
                           ),
                         ),
                       ),
@@ -137,9 +192,10 @@ class _HomeState extends State<Home> {
                           SizedBox(
                             width: 152.w,
                           ),
-                          GestureDetector(onTap: (){
+                          GestureDetector(onTap: () {
                             print(message.text);
-                            BlocProvider.of<TranslateBloc>(context).add(FetchTranslate(message: message.text));
+                            BlocProvider.of<TranslateBloc>(context).add(
+                                FetchTranslate(message: message.text));
                           },
                             child: Container(
                               width: 90.w,
@@ -205,13 +261,32 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         height: 17.h,
                       ),
-                      Text("مرحبا، كيف حالك ؟",
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                          )),
+                      BlocBuilder<TranslateBloc, TranslateState>(
+                        builder: (context, state) {
+                          if (state is TranslateblocLoading) {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                          if (state is TranslateblocError) {
+                            return Center(child: Text("ERROR"),);
+                          }
+                          if (state is TranslateblocLoaded) {
+                            data = BlocProvider
+                                .of<TranslateBloc>(context)
+                                .translateModel;
+
+
+                            return Text(data.trans.toString(),
+                                style: TextStyle(
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                ));
+                          } else{
+                            return SizedBox();
+                          }
+                        },
+                      ),
                       SizedBox(
-                        height: 90.h,
+                        height: 76.h,
                       ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
