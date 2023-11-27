@@ -1,14 +1,16 @@
 class LanguageModel {
   LanguageModel({
-      this.code, 
-      this.language,});
+    this.code,
+    this.language,
+  });
 
   LanguageModel.fromJson(dynamic json) {
     code = json['code'];
     language = json['language'];
   }
-  String? code;
-  String? language;
+
+  dynamic code;
+  dynamic language;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -17,4 +19,9 @@ class LanguageModel {
     return map;
   }
 
+  static List<LanguageModel> listFromJson(List<dynamic> json) {
+    return json == null
+        ? []
+        : json.map((value) => LanguageModel.fromJson(value)).toList();
+  }
 }

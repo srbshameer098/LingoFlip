@@ -10,7 +10,7 @@ class LanguageApi {
 ApiClient apiClient = ApiClient();
 
 
-Future<LanguageModel> getLanguage() async {
+Future<List<LanguageModel>> getLanguage() async {
   String trendingpath = 'https://google-translate113.p.rapidapi.com/api/v1/translator/support-languages';
   var body = {
 
@@ -18,7 +18,7 @@ Future<LanguageModel> getLanguage() async {
   };
   Response response = await apiClient.invokeAPI(trendingpath, 'GET', body);
 
-  return LanguageModel.fromJson(jsonDecode(response.body));
+  return LanguageModel.listFromJson(jsonDecode(response.body));
 }
 
 }
