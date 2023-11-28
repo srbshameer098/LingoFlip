@@ -4,5 +4,6 @@ part of 'translate_bloc.dart';
 abstract class TranslateEvent {}
 class FetchTranslate extends TranslateEvent{
   final String message;
-  FetchTranslate({required this.message});
+  final String code;
+  FetchTranslate({required this.message,required this.code});
 }

@@ -20,21 +20,15 @@ class Home extends StatefulWidget {
 
 late TranslateModel data;
 
-
 late List<LanguageModel> data1;
-
+String dropdownvalue='';
 TextEditingController message = TextEditingController();
 
 class _HomeState extends State<Home> {
-  String dropdownvalue = '';
-
-
-
-
   @override
   void initState() {
     BlocProvider.of<LanguageBloc>(context).add(FetchLanguage());
-    // TODO: implement initState
+
     super.initState();
   }
 
@@ -87,51 +81,45 @@ class _HomeState extends State<Home> {
                       SizedBox(
                         width: 20.w,
                       ),
-
                       BlocBuilder<LanguageBloc, LanguageState>(
-  builder: (context, state) {
-    if (state is LanguageblocLoading) {
-      return Center(child: CircularProgressIndicator());
-    }
-    if (state is LanguageblocError) {
-      return Center(child: Text("ERROR"));
-    }
-    if (state is LanguageblocLoaded) {
-      data1 = BlocProvider
-          .of<LanguageBloc>(context)
-          .languageModel;
-     return DropdownButton(
-        // Initial Value
-        value: dropdownvalue,
+                          builder: (context, state) {
+                        if (state is LanguageblocLoading) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        if (state is LanguageblocError) {
+                          return Center(child: Text("ERROR"));
+                        }
+                        if (state is LanguageblocLoaded) {
+                          data1 = BlocProvider.of<LanguageBloc>(context)
+                              .languageModel;
+                          return DropdownButton(
+                            hint: Text("hello"),
+                            value: dropdownvalue,
+                            items: data1.map<DropdownMenuItem<String>>(
+                                (LanguageModel item) {
 
-        // Array list of items
-        items: data1.map<DropdownMenuItem<String>>((LanguageModel item) {
-          return DropdownMenuItem<String>(
-              value: item.language, // replace with the actual property name
-              child: SizedBox(
-                width: 90.w,
-                child: Center(child: Text(item.language)),
-              )
+                              // print(item.language);
+                              return DropdownMenuItem<String>(
+                                value: item.code,
 
-          );
-        }).toList(),
-
-        // After selecting the desired option, it will
-        // change button value to the selected value
-        onChanged: (String? newValue) {
-          setState(() {
-            dropdownvalue = newValue!;
-          });
-        },
-      );
-    } else {
-      return SizedBox();
-    }
-  }),
-
-
-
-
+                                // Assuming 'code' is a unique identifier
+                                child: SizedBox(
+                                  width: 90.w,
+                                  child: Center(child: Text(item.language)),
+                                ),
+                              );
+                            }).toList(),
+                            onChanged: (newValue) {
+                              setState(() {
+                                dropdownvalue = newValue!;
+                              });
+                              print(dropdownvalue);
+                            },
+                          );
+                        } else {
+                          return SizedBox();
+                        }
+                      }),
                     ],
                   ),
                 ),
@@ -211,8 +199,11 @@ class _HomeState extends State<Home> {
                           GestureDetector(
                             onTap: () {
                               print(message.text);
-                              BlocProvider.of<TranslateBloc>(context)
-                                  .add(FetchTranslate(message: message.text));
+                              print(dropdownvalue);
+                              BlocProvider.of<TranslateBloc>(context).add(
+                                  FetchTranslate(
+                                      message: message.text,
+                                      code: dropdownvalue));
                             },
                             child: Container(
                               width: 90.w,
@@ -256,7 +247,7 @@ class _HomeState extends State<Home> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Malayalam",
+                            dropdownvalue,
                             style: TextStyle(
                               fontSize: 16.sp,
                               color: Colors.blueAccent,

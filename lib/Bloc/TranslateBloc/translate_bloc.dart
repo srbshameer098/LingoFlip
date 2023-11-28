@@ -16,7 +16,7 @@ class TranslateBloc extends Bloc<TranslateEvent, TranslateState> {
       emit(TranslateblocLoading());
       try{
 
-        translateModel =await translateApi.getTranslate(event.message);
+        translateModel =await translateApi.getTranslate(event.message,event.code);
         emit(TranslateblocLoaded());
       }catch(e){
         print(e);
